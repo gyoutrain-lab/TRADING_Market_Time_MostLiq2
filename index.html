@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SMC Liquidity Screener & 25 Tickers Discount Range Navigator Pro</title>
+
+  <!-- Open Graph / WhatsApp / Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="World Trading Time-Navigator & 25 Tickers SMC Screener Pro">
+  <meta property="og:description" content="AMD Session Framework, 1D Trend Sync, 25 High-Liquidity Tickers, & 5M Discount Range Entry Navigator.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/gyoutrain-lab/TRADING_Market_Time_MostLiq/main/TimeLiqui.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter / X Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SMC 25 Tickers Discount Entry Screener Pro">
+  <meta name="twitter:description" content="Distinct Session Chimes (Asia, London, NY) and 25 Tickers 5M Discount Zone Entry Alerts.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/gyoutrain-lab/TRADING_Market_Time_MostLiq/main/TimeLiqui.jpg">
+
+  <!-- Icons & Fonts -->
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gyoutrain-lab/TRADING_Market_Time_MostLiq/main/TimeLiqui.jpg">
+  <link rel="icon" type="image/jpeg" sizes="32x32" href="https://raw.githubusercontent.com/gyoutrain-lab/TRADING_Market_Time_MostLiq/main/TimeLiqui.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #060911;
+      --panel-bg: rgba(15, 23, 42, 0.78);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --color-asia: #f59e0b;       
+      --color-london: #ef4444;     
+      --color-ny: #10b981;         
+      --color-overlap: #3b82f6;    
+      --color-gold: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px 14px; overflow-x: hidden; }
+    .container { width: 100%; max-width: 1320px; display: flex; flex-direction: column; gap: 20px; }
+
+    header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: var(--panel-bg); border: 1px solid var(--panel-border); backdrop-filter: blur(20px); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .logo-area { display: flex; align-items: center; gap: 14px; }
+    .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--color-gold), var(--color-ny)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; color: #000; box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+    .brand-title { font-size: 1.2rem; font-weight: 800; letter-spacing: 0.5px; }
+    .brand-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+    .status-badge { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--panel-border); border-radius: 30px; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    .card { background: var(--panel-bg); border: 1px solid var(--panel-border); backdrop-filter: blur(20px); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; align-items: center; position: relative; }
+    .card-title { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* SVG Radial Clock */
+    .clock-wrapper { position: relative; width: 300px; height: 300px; margin: 10px 0; }
+    svg.radial-clock { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .clock-center-info { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
+    .time-digital { font-family: 'JetBrains Mono', monospace; font-size: 2.1rem; font-weight: 800; }
+    .session-active-label { font-size: 0.8rem; font-weight: 700; color: var(--color-gold); margin-top: 4px; }
+    .timezone-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Audio Bar */
+    .audio-alert-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.3); padding: 12px 18px; border-radius: 12px; margin-top: 14px; }
+    .btn-audio { background: linear-gradient(135deg, var(--color-gold), var(--color-london)); color: #000; font-weight: 700; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.78rem; transition: transform 0.2s; }
+    .btn-audio:hover { transform: scale(1.03); }
+
+    /* Table & Tooltips */
+    .table-wrapper { width: 100%; overflow-x: auto; margin-top: 5px; max-height: 600px; overflow-y: auto; }
+    table.screener-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left; }
+    table.screener-table th { background: rgba(255,255,255,0.04); color: var(--text-muted); padding: 10px; font-weight: 700; border-bottom: 1px solid var(--panel-border); text-transform: uppercase; font-size: 0.7rem; position: sticky; top: 0; backdrop-filter: blur(10px); z-index: 10; }
+    table.screener-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); font-family: 'JetBrains Mono', monospace; position: relative; }
+    table.screener-table tr:hover { background: rgba(255,255,255,0.03); }
+
+    .trend-up { color: #10b981; font-weight: 700; }
+    .trend-down { color: #ef4444; font-weight: 700; }
+    .trend-side { color: var(--color-gold); font-weight: 700; }
+
+    .badge-good { color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 4px; }
+    .badge-bad { color: #ef4444; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 4px; }
+    
+    .badge-discount { background: rgba(16, 185, 129, 0.25); color: #10b981; border: 1px solid #10b981; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 0.7rem; animation: pulseDiscount 1.2s infinite alternate; }
+    .badge-premium { background: rgba(239, 68, 68, 0.25); color: #ef4444; border: 1px solid #ef4444; padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.7rem; }
+    .badge-eq { background: rgba(251, 191, 36, 0.25); color: var(--color-gold); border: 1px solid var(--color-gold); padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.7rem; }
+
+    @keyframes pulseDiscount { from { box-shadow: 0 0 4px rgba(16, 185, 129, 0.4); } to { box-shadow: 0 0 14px rgba(16, 185, 129, 0.9); } }
+
+    .screener-tooltip { position: absolute; top: -42px; left: 15%; background: rgba(10, 15, 26, 0.96); border: 1px solid var(--color-gold); box-shadow: 0 10px 25px rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 8px; font-size: 0.72rem; font-family: 'Inter', sans-serif; color: var(--text-main); white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 200; }
+    tr:hover .screener-tooltip { opacity: 1; visibility: visible; top: -46px; }
+
+    .btn-tv { color: var(--color-overlap); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-tv:hover { background: rgba(59, 130, 246, 0.25); border-color: rgba(59, 130, 246, 0.6); }
+
+    /* Calendar Grid */
+    .cal-header { width: 100%; display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); padding-bottom: 8px; border-bottom: 1px solid var(--panel-border); }
+    .cal-grid { width: 100%; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
+    .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border: 1px solid var(--panel-border); border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; position: relative; cursor: pointer; }
+    .cal-day.empty { background: transparent; border: none; cursor: default; }
+    .cal-day.event { border: 2px solid var(--color-gold); box-shadow: 0 0 12px rgba(251, 191, 36, 0.25); }
+    .cal-day.today { background: rgba(16, 185, 129, 0.2) !important; border-color: #10b981 !important; }
+
+    .cal-tooltip { position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%) translateY(5px); background: rgba(10, 15, 26, 0.95); border: 1px solid var(--color-gold); padding: 6px 10px; border-radius: 6px; font-size: 0.7rem; font-family: 'Inter', sans-serif; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 100; }
+    .cal-day:hover .cal-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+    footer { text-align: center; padding: 16px 0; font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--panel-border); margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo-area">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <div class="brand-title">SMC TIME-NAVIGATOR & 25 TICKERS SCREENER</div>
+          <div class="brand-subtitle">AMD Framework with 25 High-Liquidity Assets, 5M Discount Range & Audio Chimes</div>
+        </div>
+      </div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span id="marketStateText">SYNCHRONIZING 25 TICKERS ENGINE...</span>
+      </div>
+    </header>
+
+    <!-- Top Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- 24-Hour Radial Dial -->
+      <div class="card">
+        <div class="card-title">
+          <span>24-Hour Radial AMD Session Dial (WIB)</span>
+          <span id="liveDateText">--/--/----</span>
+        </div>
+
+        <div class="clock-wrapper">
+          <svg class="radial-clock" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8" />
+            <circle id="arcAsia" cx="100" cy="100" r="82" fill="none" stroke="var(--color-asia)" stroke-width="6" />
+            <circle id="arcLondon" cx="100" cy="100" r="72" fill="none" stroke="var(--color-london)" stroke-width="6" />
+            <circle id="arcNY" cx="100" cy="100" r="62" fill="none" stroke="var(--color-ny)" stroke-width="6" />
+            <circle id="arcOverlap" cx="100" cy="100" r="67" fill="none" stroke="var(--color-overlap)" stroke-width="8" />
+            <line id="clockHand" x1="100" y1="100" x2="100" y2="18" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="100" cy="100" r="4" fill="#ffffff" />
+          </svg>
+
+          <div class="clock-center-info">
+            <div class="time-digital" id="timeDigital">00:00:00</div>
+            <div class="session-active-label" id="sessionActiveLabel">ASIA ACCUMULATION</div>
+            <div class="timezone-label">JAKARTA (UTC+7 / WIB)</div>
+          </div>
+        </div>
+
+        <!-- Audio Control -->
+        <div class="audio-alert-bar">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-gold);">🔊 Audio Chime & Discount Alert System</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Aktifkan suara untuk Session Open & Peringatan Posisi Discount (5M).</div>
+          </div>
+          <button class="btn-audio" id="btnEnableAudio">Enable Audio</button>
+        </div>
+      </div>
+
+      <!-- Economic Calendar Sync -->
+      <div class="card">
+        <div class="card-title">
+          <span>Economic Calendar & Event Countdown</span>
+          <span style="color: var(--color-gold); font-size: 0.75rem;">⭐ REAL-TIME SYNC</span>
+        </div>
+
+        <div class="cal-header">
+          <span>S</span><span>S</span><span>R</span><span>K</span><span>J</span><span>S</span><span>M</span>
+        </div>
+
+        <div class="cal-grid" id="calendarGrid"></div>
+
+        <div class="event-banner" id="eventBanner" style="margin-top: 15px; width: 100%; border: 1px solid var(--panel-border); padding: 12px; border-radius: 10px;">
+          <div id="bannerTitle" style="font-weight: 700; color: var(--color-gold); font-size: 0.85rem;">Status Rilis Berita</div>
+          <div id="bannerDesc" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Arahkan kursor ke tanggal kalender untuk melihat hitung mundur jam/hari.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Table: Real-Time Screener across 25 High-Liquidity Tickers -->
+    <div class="card">
+      <div class="card-title">
+        <span>25 High-Liquidity Tickers Screener (Forex, Stocks, Commodities, Gold, DXY, Crypto)</span>
+        <span style="color: var(--color-ny); font-size: 0.75rem;">⚡ 1D TREND & 5M DISCOUNT SYNCED</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="screener-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Ticker / Symbol</th>
+              <th>Kategori</th>
+              <th>1D Trend Direction</th>
+              <th>SMC Liquidity Status</th>
+              <th>5M Entry Range Position</th>
+              <th>Action & Chart</th>
+            </tr>
+          </thead>
+          <tbody id="screenerTbody">
+            <!-- Dynamically Rendered 25 Items -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer>
+      World Trading Time-Navigator & 25 Tickers SMC Screener &copy; 2026 | Built for High-Precision Execution.
+    </footer>
+  </div>
+
+  <script>
+    // Total 25 High-Liquidity Tickers Array (Forex, Stocks, Commodities, Gold, DXY, Crypto)
+    const top25Tickers = [
+      // --- FOREX MAJORS & COMMODITIES (1-8) ---
+      {
+        no: 1, symbol: 'EUR/USD', category: 'Forex Major',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'London',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Protected Low Swept! 5M Candle in Discount Zone (<50%) - HIGH PROBABILITY LONG ENTRY.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=FX:EURUSD'
+      },
+      {
+        no: 2, symbol: 'USD/JPY', category: 'Forex Major',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'Asia',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'Asian Range Low Swept. Price at 50% Equilibrium Zone.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=FX:USDJPY'
+      },
+      {
+        no: 3, symbol: 'GBP/USD', category: 'Forex Major',
+        trend1D: 'DOWNTREND (BEARISH)', trendClass: 'trend-down', activeSession: 'London',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'PREMIUM (>50%)', rangeClass: 'badge-premium',
+        tooltip: 'Unprotected Low! Price in Premium Zone for Shorts, but No Liquidity Sweep yet.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=FX:GBPUSD'
+      },
+      {
+        no: 4, symbol: 'XAU/USD (Gold)', category: 'Precious Metals',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Protected Low Swept! 5M Candle in OTE Discount Range - OPTIMAL LONG BUYING ZONE.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=OANDA:XAUUSD'
+      },
+      {
+        no: 5, symbol: 'DXY (Dollar Index)', category: 'Currency Index',
+        trend1D: 'DOWNTREND (BEARISH)', trendClass: 'trend-down', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'PREMIUM (>50%)', rangeClass: 'badge-premium',
+        tooltip: 'Protected High Swept! 5M Candle in Premium Zone (>50%) - OPTIMAL SHORT ZONE.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=TVC:DXY'
+      },
+      {
+        no: 6, symbol: 'AUD/USD', category: 'Commodity Forex',
+        trend1D: 'SIDEWAYS (RANGE)', trendClass: 'trend-side', activeSession: 'Asia',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'No Sweep / Internal Liquidity Compression Only.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=FX:AUDUSD'
+      },
+      {
+        no: 7, symbol: 'USD/CHF', category: 'Forex Major',
+        trend1D: 'DOWNTREND (BEARISH)', trendClass: 'trend-down', activeSession: 'London',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'PREMIUM (>50%)', rangeClass: 'badge-premium',
+        tooltip: 'Unprotected Lows. Compression Range Active.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=FX:USDCHF'
+      },
+      {
+        no: 8, symbol: 'NZD/USD', category: 'Commodity Forex',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'Asia',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Protected Low Swept + Asian Range Breakout in Discount Zone.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=FX:NZDUSD'
+      },
+
+      // --- STOCKS & US INDICES (9-15) ---
+      {
+        no: 9, symbol: 'S&P 500 (SPY)', category: 'US Stock Index',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Pre-Market Sweep Confirmed! 5M Candle in Discount Zone (<50%) for Long Execution.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=AMEX:SPY'
+      },
+      {
+        no: 10, symbol: 'NASDAQ 100 (QQQ)', category: 'Tech Stock Index',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'Swing Low Protected. 5M Candle at Equilibrium (50%). Await Discount Pullback.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=NASDAQ:QQQ'
+      },
+      {
+        no: 11, symbol: 'APPLE INC (AAPL)', category: 'US Stocks',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Institutional Accumulation + 5M Discount Pullback Verified.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL'
+      },
+      {
+        no: 12, symbol: 'MICROSOFT (MSFT)', category: 'US Stocks',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'Protected Low Valid. Price trading near equilibrium.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=NASDAQ:MSFT'
+      },
+      {
+        no: 13, symbol: 'TESLA INC (TSLA)', category: 'US Stocks',
+        trend1D: 'DOWNTREND (BEARISH)', trendClass: 'trend-down', activeSession: 'New York',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'PREMIUM (>50%)', rangeClass: 'badge-premium',
+        tooltip: 'Unprotected Highs. High Volatility Premium Short Zone.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=NASDAQ:TSLA'
+      },
+      {
+        no: 14, symbol: 'NVIDIA (NVDA)', category: 'US Stocks',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Clean Liquidity Sweep of Previous Day Low + Discount Entry.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=NASDAQ:NVDA'
+      },
+      {
+        no: 15, symbol: 'DOW JONES (DIA)', category: 'US Stock Index',
+        trend1D: 'SIDEWAYS (RANGE)', trendClass: 'trend-side', activeSession: 'New York',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'Consolidation Phase. No Clear Sweep.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=AMEX:DIA'
+      },
+
+      // --- COMMODITIES & ENERGY (16-19) ---
+      {
+        no: 16, symbol: 'WTI Crude Oil (CL)', category: 'Energy Commodity',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'London',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Protected Low Swept + 5M Candle in Discount Zone (<50%) - ENTRY READY.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=TVC:USOIL'
+      },
+      {
+        no: 17, symbol: 'XAG/USD (Silver)', category: 'Precious Metals',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'High Beta Gold Correlation + Discount Pullback Active.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=OANDA:XAGUSD'
+      },
+      {
+        no: 18, symbol: 'Natural Gas (NG)', category: 'Energy Commodity',
+        trend1D: 'DOWNTREND (BEARISH)', trendClass: 'trend-down', activeSession: 'New York',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'PREMIUM (>50%)', rangeClass: 'badge-premium',
+        tooltip: 'Unprotected Range Highs. Bearish Expansion.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=NYMEX:NG1!',
+      },
+      {
+        no: 19, symbol: 'Copper (HG)', category: 'Industrial Metal',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'London',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'Protected Low Confirmed at Equilibrium Range.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=COMEX:HG1!'
+      },
+
+      // --- CRYPTOCURRENCIES (20-25) ---
+      {
+        no: 20, symbol: 'BTC/USD (Bitcoin)', category: 'Crypto',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Protected Swing Low Swept (Asian Session Low) + 5M Discount Zone Long.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=BINANCE:BTCUSDT'
+      },
+      {
+        no: 21, symbol: 'ETH/USD (Ethereum)', category: 'Crypto',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Institutional Mitigation Block Reached in Discount Zone.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=BINANCE:ETHUSDT'
+      },
+      {
+        no: 22, symbol: 'SOL/USD (Solana)', category: 'Crypto',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'New York',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'High Beta Momentum. Equilibrium Touchpoint.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=BINANCE:SOLUSDT'
+      },
+      {
+        no: 23, symbol: 'XRP/USD (Ripple)', category: 'Crypto',
+        trend1D: 'SIDEWAYS (RANGE)', trendClass: 'trend-side', activeSession: 'Asia',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'EQUILIBRIUM (50%)', rangeClass: 'badge-eq',
+        tooltip: 'Range Bound Liquidity Pool Accumulation.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=BINANCE:XRPUSDT'
+      },
+      {
+        no: 24, symbol: 'BNB/USD (Binance)', category: 'Crypto',
+        trend1D: 'UPTREND (BULLISH)', trendClass: 'trend-up', activeSession: 'Asia',
+        status: 'GOOD', badgeClass: 'badge-good', range5M: 'DISCOUNT (<50%)', rangeClass: 'badge-discount',
+        tooltip: 'Protected Low Sweep Verified in Asian Session.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=BINANCE:BNBUSDT'
+      },
+      {
+        no: 25, symbol: 'ADA/USD (Cardano)', category: 'Crypto',
+        trend1D: 'DOWNTREND (BEARISH)', trendClass: 'trend-down', activeSession: 'New York',
+        status: 'BAD', badgeClass: 'badge-bad', range5M: 'PREMIUM (>50%)', rangeClass: 'badge-premium',
+        tooltip: 'Unprotected Swing Highs. Bearish Order Block Retest.',
+        tvUrl: 'https://www.tradingview.com/chart/?symbol=BINANCE:ADAUSDT'
+      }
+    ];
+
+    const economicEvents = {
+      2: { name: 'ISM Manufacturing PMI', hour: 21, min: 0, timeStr: '21:00 WIB' },
+      5: { name: 'NFP (Non-Farm Payrolls)', hour: 19, min: 30, timeStr: '19:30 WIB' },
+      12: { name: 'CPI (Consumer Price Index)', hour: 19, min: 30, timeStr: '19:30 WIB' },
+      13: { name: 'PPI (Producer Price Index)', hour: 19, min: 30, timeStr: '19:30 WIB' },
+      20: { name: 'FOMC Rate Statement', hour: 1, min: 0, timeStr: '01:00 WIB' },
+      27: { name: 'PCE Price Index', hour: 19, min: 30, timeStr: '19:30 WIB' }
+    };
+
+    let audioCtx = null;
+    let lastTriggeredSession = null;
+    let lastDiscountAlertMinute = -1;
+
+    document.getElementById('btnEnableAudio').addEventListener('click', () => {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      playCustomChime('ASIA');
+      alert('🔊 Audio & Discount Alert System 25 Tickers diaktifkan! Anda akan menerima peringatan suara saat Sesi Open & Posisi Discount (5M) aktif.');
+    });
+
+    // Custom Audio Engine
+    function playCustomChime(type) {
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const now = audioCtx.currentTime;
+
+      if (type === 'ASIA') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.type = 'sine'; osc.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+        osc.start(now); osc.stop(now + 1.2);
+      } else if (type === 'LONDON') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(587.33, now);
+        osc.frequency.setValueAtTime(880, now + 0.3);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+        osc.start(now); osc.stop(now + 0.9);
+      } else if (type === 'NY') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.type = 'square'; osc.frequency.setValueAtTime(783.99, now);
+        osc.frequency.setValueAtTime(1046.50, now + 0.2);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+        osc.start(now); osc.stop(now + 1.0);
+      } else if (type === 'DISCOUNT_ALERT') {
+        for (let i = 0; i < 3; i++) {
+          let start = now + (i * 0.2);
+          let subOsc = audioCtx.createOscillator();
+          let subGain = audioCtx.createGain();
+          subOsc.type = 'sawtooth';
+          subOsc.frequency.setValueAtTime(329.63, start);
+          subGain.gain.setValueAtTime(0.22, start);
+          subGain.gain.exponentialRampToValueAtTime(0.001, start + 0.18);
+          subOsc.connect(subGain); subGain.connect(audioCtx.destination);
+          subOsc.start(start); subOsc.stop(start + 0.18);
+        }
+      }
+    }
+
+    function getActiveSessionName(hours) {
+      if (hours >= 6 && hours < 14) return 'Asia';
+      if (hours >= 14 && hours < 19) return 'London';
+      if (hours >= 19 || hours < 4) return 'New York';
+      return 'Consolidation';
+    }
+
+    // Render Screener Table for 25 Tickers
+    function renderScreenerTable(activeSession) {
+      const tbody = document.getElementById('screenerTbody');
+      tbody.innerHTML = top25Tickers.map((t, index) => {
+        return `
+          <tr>
+            <td>${t.no}</td>
+            <td><span style="font-weight: 800;">${t.symbol}</span></td>
+            <td>${t.category}</td>
+            <td><span class="${t.trendClass}">${t.trend1D}</span></td>
+            <td>
+              <span class="${t.badgeClass}">
+                <span>${t.status === 'GOOD' ? '✔ GOOD LIQUIDITY' : '✖ BAD LIQUIDITY'}</span>
+              </span>
+            </td>
+            <td>
+              <span class="${t.rangeClass}">
+                ${t.range5M}
+              </span>
+              <div class="screener-tooltip">${t.tooltip}</div>
+            </td>
+            <td>
+              <a href="${t.tvUrl}" target="_blank" rel="noopener" class="btn-tv">📈 View Chart</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Render Calendar
+    function renderEconomicCalendar() {
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+      const totalDays = 30;
+      const startOffset = 3;
+
+      for (let i = 0; i < startOffset; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'cal-day empty';
+        grid.appendChild(emptyCell);
+      }
+
+      const now = new Date();
+      const currentToday = now.getDate();
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'cal-day';
+        dayCell.innerText = day;
+
+        if (day === currentToday) dayCell.classList.add('today');
+
+        const diffDays = day - currentToday;
+        let countdownText = diffDays > 0 ? `Kurang ${diffDays} Hari Lagi` : (diffDays === 0 ? 'RILIS HARI INI!' : 'Sudah Lewat');
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'cal-tooltip';
+        tooltip.innerText = `${economicEvents[day] ? economicEvents[day].name : 'No High Impact'} [${countdownText}]`;
+        dayCell.appendChild(tooltip);
+
+        if (economicEvents[day]) {
+          dayCell.classList.add('event');
+          dayCell.addEventListener('click', () => {
+            const ev = economicEvents[day];
+            document.getElementById('bannerTitle').innerText = `Tgl ${day}: ${ev.name} (${ev.timeStr})`;
+            document.getElementById('bannerDesc').innerText = `Status: ${countdownText}`;
+          });
+        }
+
+        grid.appendChild(dayCell);
+      }
+    }
+
+    function setArcDash(elemId, startHour, endHour) {
+      const circle = document.getElementById(elemId);
+      const circumference = 2 * Math.PI * parseFloat(circle.getAttribute('r'));
+      let durationHours = endHour >= startHour ? (endHour - startHour) : (24 - startHour + endHour);
+      let dashLength = (durationHours / 24) * circumference;
+      let offset = circumference - ((startHour / 24) * circumference);
+
+      circle.style.strokeDasharray = `${dashLength} ${circumference - dashLength}`;
+      circle.style.strokeDashoffset = -offset;
+    }
+
+    function initClockArcs() {
+      setArcDash('arcAsia', 6, 15);
+      setArcDash('arcLondon', 14, 23);
+      setArcDash('arcNY', 19, 4);
+      setArcDash('arcOverlap', 20, 0);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      document.getElementById('timeDigital').innerText = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+      document.getElementById('liveDateText').innerText = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' });
+
+      const totalMinutes = hours * 60 + minutes + (seconds / 60);
+      const angle = (totalMinutes / 1440) * 360;
+      document.getElementById('clockHand').setAttribute('transform', `rotate(${angle} 100 100)`);
+
+      const currentActiveSession = getActiveSessionName(hours);
+
+      if (minutes === 0 && seconds === 0) {
+        if (hours === 6 && lastTriggeredSession !== 'ASIA_OPEN') {
+          playCustomChime('ASIA');
+          lastTriggeredSession = 'ASIA_OPEN';
+        } else if (hours === 14 && lastTriggeredSession !== 'LONDON_OPEN') {
+          playCustomChime('LONDON');
+          lastTriggeredSession = 'LONDON_OPEN';
+        } else if (hours === 19 && lastTriggeredSession !== 'NY_OPEN') {
+          playCustomChime('NY');
+          lastTriggeredSession = 'NY_OPEN';
+        }
+      }
+
+      const discountTickersCount = top25Tickers.filter(t => t.trend1D.includes('UPTREND') && t.range5M.includes('DISCOUNT') && t.status === 'GOOD').length;
+      
+      if (discountTickersCount > 0 && minutes % 10 === 0 && seconds === 0 && lastDiscountAlertMinute !== minutes) {
+        playCustomChime('DISCOUNT_ALERT');
+        lastDiscountAlertMinute = minutes;
+      }
+
+      renderScreenerTable(currentActiveSession);
+
+      const label = document.getElementById('sessionActiveLabel');
+      const marketText = document.getElementById('marketStateText');
+
+      if (hours >= 20 && hours < 24) {
+        label.innerText = '🔥 AMD: GOLDEN OVERLAP (DISTRIBUTION)';
+        label.style.color = 'var(--color-overlap)';
+        marketText.innerText = 'PEAK NY/LONDON OVERLAP ACTIVE';
+      } else if (hours >= 14 && hours < 23) {
+        label.innerText = '⚡ AMD: LONDON (MANIPULATION / JUDAS)';
+        label.style.color = 'var(--color-london)';
+        marketText.innerText = 'LONDON MANIPULATION ACTIVE';
+      } else if (hours >= 6 && hours < 15) {
+        label.innerText = '📊 AMD: ASIA (ACCUMULATION RANGE)';
+        label.style.color = 'var(--color-asia)';
+        marketText.innerText = 'ASIA ACCUMULATION ACTIVE';
+      } else {
+        label.innerText = '🚀 AMD: NEW YORK (DISTRIBUTION)';
+        label.style.color = 'var(--color-ny)';
+        marketText.innerText = 'NEW YORK DISTRIBUTION ACTIVE';
+      }
+    }
+
+    renderEconomicCalendar();
+    initClockArcs();
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
